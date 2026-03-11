@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common'
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common'
 import { UserService } from '../service/user.service'
 import { CreateUserDto } from '../domain/dto/create-user.dto'
 import { UpdateUserDto } from '../domain/dto/update-user.dto'
+import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
 
 @Controller('users')
 export class UserController {
@@ -13,8 +14,8 @@ export class UserController {
   }
 
   @Get()
-  findAll() {
-    return this.userService.findAll()
+  findAll(@Query() query: PaginationQueryDto) {
+    return this.userService.findAll(query)
   }
 
   @Get('email/:email')

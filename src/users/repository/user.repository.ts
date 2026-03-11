@@ -4,7 +4,7 @@ import { User } from '../domain/user.entity'
 
 export abstract class UserRepository {
   abstract create(data: CreateUserDto): Promise<void>
-  abstract findAll(): Promise<User[]>
+  abstract findAll(page: number, limit: number): Promise<{ users: User[]; total: number }>
   abstract findById(id: string): Promise<User | null>
   abstract findByEmail(email: string): Promise<User | null>
   abstract update(id: string, user: UpdateUserDto): Promise<void>

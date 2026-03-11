@@ -3,6 +3,9 @@ import { UserRepository } from '../repository/user.repository'
 import { CreateUserDto } from '../domain/dto/create-user.dto'
 import { UpdateUserDto } from '../domain/dto/update-user.dto'
 import { UserMapper } from '../mappers/user.mapper'
+import { PaginationQueryDto } from '../../common/dto/pagination-query.dto'
+import { PaginatedResult } from '../../common/types/pagineted-result'
+import { UserResponseDto } from '../domain/dto/user-response.dto'
 
 @Injectable()
 export class UserService {
@@ -14,9 +17,19 @@ export class UserService {
     await this.userRepository.create(data)
   }
 
-  async findAll() {
-    const users = await this.userRepository.findAll()
-    return users.map((user) => UserMapper.toResponseDto(user))
+  async findAll(query: PaginationQueryDto): Promise<PaginatedResult<UserResponseDto>> {
+    const { page, limit } = query
+    const { users, total } = await this.userRepository.findAll(page, limit)
+
+    return {
+      data: users.map((user) => UserMapper.toResponseDto(user)),
+      meta: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit),
+      },
+    }
   }
 
   async findById(id: string) {
