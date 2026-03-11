@@ -1,5 +1,15 @@
-export interface UpdateUserDto {
-  name?: string
-  email?: string
+import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator'
+
+export class UpdateUserDto {
+  @IsString()
+  @IsOptional()
+  name: string
+
+  @IsEmail()
+  @IsOptional()
+  email: string
+
+  @IsString()
+  @IsOptional()
   phone?: string
 }
