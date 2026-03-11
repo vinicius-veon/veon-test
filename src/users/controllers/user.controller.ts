@@ -9,7 +9,7 @@ export class UserController {
 
   @Post()
   create(@Body() data: CreateUserDto) {
-    this.userService.create(data)
+    return this.userService.create(data)
   }
 
   @Get()
@@ -29,11 +29,11 @@ export class UserController {
 
   @Put(':id')
   update(@Param('id') id: string, @Body() data: UpdateUserDto) {
-    this.userService.update(id, data)
+    return this.userService.update(id, data)
   }
 
   @Delete(':id')
   delete(@Param('id') id: string) {
-    this.userService.delete(id)
+    return this.userService.delete(id)
   }
 }
