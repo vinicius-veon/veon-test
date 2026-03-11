@@ -1,11 +1,3 @@
-import { randomUUID } from 'node:crypto'
-
-interface CreateUserProps {
-  name: string
-  email: string
-  phone?: string
-}
-
 interface UserProps {
   id: string
   name: string
@@ -16,14 +8,6 @@ interface UserProps {
 
 export class User {
   private constructor(private props: UserProps) {}
-
-  static create(input: CreateUserProps): User {
-    return new User({
-      id: randomUUID(),
-      createdAt: new Date(),
-      ...input,
-    })
-  }
 
   // método para reconstituir dados do banco
   static reconstitute(props: UserProps): User {
