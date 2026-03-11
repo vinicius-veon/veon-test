@@ -9,8 +9,8 @@ export class UserService {
   constructor(private userRepository: UserRepository) {}
 
   async create(data: CreateUserDto) {
-    const emailAlreadyExists = await this.userRepository.findByEmail(data.email)
-    if (emailAlreadyExists) throw new BadRequestException(`Already exists an user with this email: ${data.email}`)
+    const userWithEmail = await this.userRepository.findByEmail(data.email)
+    if (userWithEmail) throw new BadRequestException(`Already exists an user with this email: ${data.email}`)
     await this.userRepository.create(data)
   }
 
@@ -32,16 +32,16 @@ export class UserService {
   }
 
   async update(id: string, user: UpdateUserDto) {
-    await this.verifyIfUserExists(id)
+    await this.assertUserExists(id)
     await this.userRepository.update(id, user)
   }
 
   async delete(id: string) {
-    await this.verifyIfUserExists(id)
+    await this.assertUserExists(id)
     await this.userRepository.delete(id)
   }
 
-  private async verifyIfUserExists(id: string) {
+  private async assertUserExists(id: string) {
     const userAlreadyExists = await this.userRepository.findById(id)
     if (!userAlreadyExists) throw new NotFoundException(`User not found with id: ${id}`)
   }
